@@ -208,6 +208,10 @@ console.log(config);
 
 		camera = this.scene.scene.cameras.main;                    
 
+		//TODO sortir les collider dans create line 255
+		bombs = this.physics.add.group();
+		this.physics.add.collider(bombs, platforms);
+		this.physics.add.collider(player, bombs, hitEnemy, null, this);
 	}
 
 
@@ -252,10 +256,6 @@ console.log(config);
 		    player.setVelocityY(-650); //585
 		}
 
-		//TODO sortir les collider dans create
-		bombs = this.physics.add.group();
-		this.physics.add.collider(bombs, platforms);
-		this.physics.add.collider(player, bombs, hitEnemy, null, this);
 
 
 		// creation d'un enemy qui sur le sol
@@ -287,6 +287,20 @@ console.log(config);
 		}
     }
 
+function heartplus (player, heart_rec) 
+	{
+		heart_rec.disableBody(true, true);
+		if(vie==3){
+			heart4_verif =true;
+		}
+		else if (vie ==2){
+			heart1.setTint(0xffffff)
+		}
+		else if (vie==1){
+			heart2.setTint(0xffffff)
+		}
+		vie+=1;
+	}
 	
 		function collectStar (player, star)
 	{
@@ -350,11 +364,11 @@ console.log(config);
 			}
 
 			//creation d'un coeur supplémentaire
-			if(level == 6)
+			if(level == 3)
 			{
 				heart_rec = this.physics.add.staticGroup();
 				heart_rec.create(700, 500, 'heart').setScale(0.1).refreshBody();
-				this.physics.add.overlap(player, heart_rec, heartplus, null, this);
+				this.physics.add.overlap(player, heart_rec, /*vie, heart4_verif, heart1, heart2,*/ heartplus, null, this);
 			}
 
 			//creation d'un portail pour la fin du jeu 
@@ -376,20 +390,6 @@ console.log(config);
 
 
 
-	function heartplus (player, heart) 
-	{
-		heart.disableBody(true, true);
-		if(vie==3){
-			heart4_verif =true;
-		}
-		else if (vie ==2){
-			heart1.setTint(0xffffff)
-		}
-		else if (vie==1){
-			heart2.setTint(0xffffff)
-		}
-		vie+=1;
-	}
 
 	function malusStar (enemy, star)   // perte de score lorsque l'enemy touche une étoile     // meme function que collect star 
 	{
@@ -452,7 +452,7 @@ console.log(config);
 			}
 
 			//creation d'un coeur supplémentaire
-			if(level == 6)
+			if(level == 3)
 			{
 				heart_rec = this.physics.add.staticGroup();
 				heart_rec.create(700, 500, 'heart').setScale(0.1).refreshBody();
