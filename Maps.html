@@ -14,8 +14,12 @@
 <body>
     <div class="content">
         <img src="Logo_TNE.png"/>
-        <a href="#"><button onclick="startGame()" > Nouvelle Partie</button></a>
-        <a href="https://api.deming.fr/scoring/7/get/10" > <button> Classement </button> </a>
+        <input id="player_name_input" type="text" placeholder="Choisissez un nom"/> <button id="start" > Démarrer </button>
+        <a href="#"><button id="button_start" > Nouvelle Partie</button></a>
+        
+        <button><div> Classement </div></button>
+        <div id="classement"></div>
+        
         <!-- <a href="#">  <button> Bouton 2 </button></a>  // un second bouton à rajouter si besoin -->
             </div>
     <div id="menu">
@@ -35,6 +39,46 @@
      <!--  <script type="text/javascript" src="portail.js" id="menu">
      </script> -->
      <script type="text/javascript" src="Mini_function.js" id="menu">
+     </script>
+     <script>
+        document.addEventListener('DOMContentLoaded', (event)=>{
+            console.log(document.querySelector("#player_name_input").style);
+            document.querySelector("#player_name_input").style.display='none';
+            document.querySelector("#start").style.display='none';
+
+
+        fetch("https://api.deming.fr/scoring/7/get/10").then(function(response) { 
+           if(response.ok) {
+                response.json().then(function(json) {
+                    var scoring = "";
+                    for(j in json) {
+                          scoring += "<div><span class='nom'>"+json[j].name+"</span> ........ <span class='score'>"+json[j].score+"</span></div>"
+                    }
+                document.querySelector('#classement').innerHTML = scoring;
+            });
+           }
+        });
+
+         document.querySelector("#button_start").addEventListener("click", event => {
+         document.querySelector("#player_name_input").style.display='block';
+         document.querySelector("#start").style.display='block';
+            }
+            )
+        document.querySelector("#start").addEventListener("click", event => {
+            if (document.querySelector("#player_name_input").value !="" && document.querySelector("#player_name_input").value !="undefined"){
+                startGame(document.querySelector("#player_name_input").value);
+            }
+            else {
+                
+                alert("Merci de saisir un nom pour débuter une partie.")
+            }
+        })
+         
+          
+        });
+
+
+         
      </script>
 
 </body>

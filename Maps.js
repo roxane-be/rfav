@@ -1,6 +1,6 @@
 //version clean du programme
 
-function startGame() {
+function startGame(playerName) {
 	document.querySelector(".content").style.display="none";
 	document.querySelector("#menu").style.display="none";
 	
@@ -24,6 +24,8 @@ var config = {
     ;
 
 console.log(config);
+console.log(playerName);
+	var player_name = playerName;
     var game = new Phaser.Game(config);
     var platforms;
     var score = 0;
@@ -208,10 +210,13 @@ console.log(config);
 
 		camera = this.scene.scene.cameras.main;                    
 
-		//TODO sortir les collider dans create line 255
+	
 		bombs = this.physics.add.group();
 		this.physics.add.collider(bombs, platforms);
 		this.physics.add.collider(player, bombs, hitEnemy, null, this);
+
+
+
 	}
 
 
@@ -382,6 +387,16 @@ function heartplus (player, heart_rec)
 	}
 		function time ()
 	{
+		fetch("https://api.deming.fr/scoring/7/put/"+player_name+"/"+score).then(function(response) { 
+   if(response.ok) {
+   		response.json().then(function(json) {
+			console.log(json);
+			for(j in json) {
+				console.log(json[j].score);
+            }
+	});
+   }
+});
 		game.destroy(true);
 	    document.querySelector(".content").style.display="flex";
 	    document.querySelector("#menu").style.display="block";

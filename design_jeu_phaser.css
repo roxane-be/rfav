@@ -78,3 +78,13 @@ body #fond{     /* background */
 	width: 250px;
 
 }
+span.left{
+
+}
+span.score{
+	float:right;
+}
+
+ #start {
+	width: 125px;
+}
