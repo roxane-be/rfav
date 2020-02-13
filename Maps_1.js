@@ -28,6 +28,7 @@ console.log(config);
 	var scoreText;
 	var level_Maps_1 = 1;
 	var level_Maps_2 = 1;
+	//var level_Game = level_Maps_1 + level_Maps_2;
 	var levelText;
 	var vie = 3;
 	var vieText;
@@ -108,7 +109,7 @@ console.log(config);
 	    platforms.create(1918, -27, 'ground').setDisplaySize(3868, 64).refreshBody();    // toit
 
 	    //creation platforms bordeau
-	    platforms.create(170, 160, 'ground').setDisplaySize(340, 18).refreshBody();   // 1
+	   /* platforms.create(170, 160, 'ground').setDisplaySize(340, 18).refreshBody();   // 1
 		platforms.create(38, 650, 'ground').setDisplaySize(80, 18).refreshBody();     // 2
 		platforms.create(96, 825, 'ground').setDisplaySize(200, 18).refreshBody();    // 3
 		platforms.create(190, 475, 'ground').setDisplaySize(100, 18).refreshBody();   // 4
@@ -126,17 +127,17 @@ console.log(config);
 	    platforms.create(1725, 190, 'ground').setDisplaySize(150, 18).refreshBody();  // 16
 	    platforms.create(1690, 480, 'ground').setDisplaySize(100, 18).refreshBody();  // 17
 	    platforms.create(1725, 820, 'ground').setDisplaySize(150, 18).refreshBody();  // 18
-	    platforms.create(1865, 660, 'ground').setDisplaySize(100, 18).refreshBody();  // 19
+	    platforms.create(1865, 660, 'ground').setDisplaySize(100, 18).refreshBody();  // 19*/
 
 
 
 
 	  	//creation plateforms Lyon
-	  	platforms.create(500, 1300, 'ground').setDisplaySize(500, 18).refreshBody(); 
-	  	platforms.create(520, 1600, 'ground').setDisplaySize(1040, 18).refreshBody(); 
-	  	platforms.create(840, 1825, 'ground').setDisplaySize(1500, 18).refreshBody(); 
-	  	platforms.create(100, 2050, 'ground').setDisplaySize(200, 18).refreshBody(); 
-	  	platforms.create(1830, 2050, 'ground').setDisplaySize(170, 18).refreshBody(); 
+	  	platforms.create(500, 1300, 'ground').setDisplaySize(500, 18).refreshBody();   //1
+	  	platforms.create(520, 1600, 'ground').setDisplaySize(1040, 18).refreshBody();  //2
+	  	platforms.create(840, 1825, 'ground').setDisplaySize(1500, 18).refreshBody();  //3
+	  	platforms.create(100, 2050, 'ground').setDisplaySize(200, 18).refreshBody();   //4
+	  	platforms.create(1830, 2050, 'ground').setDisplaySize(170, 18).refreshBody();  //5
 
 
 	  	//creation platforms Paris
@@ -247,26 +248,31 @@ console.log(config);
 
 
 		key = this.physics.add.staticGroup();
-		key.create(600, 1650, 'key').setScale(0.1).refreshBody();
+		key.create(120, 1950, 'key').setScale(0.1).refreshBody();
 		this.physics.add.overlap(player, key,  key_get , null, this);
+
+		key.children.iterate(function (child) {
+
+		    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+		});
+
 
 
 		doorLock = this.physics.add.staticGroup();
 	    doorLock.create(1775, 2103, 'ground').setDisplaySize(60,90).refreshBody();
 	    doorLock.setTint(0x000000)
 	    this.physics.add.collider(player, doorLock, door_lock , null, this);
+
+	    doorLock.children.iterate(function (child) {
+
+		    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+		});
 	    
-
-
- 		laser = this.physics.add.sprite(100, 1608, 'laser');
-	    laser.setDisplaySize(15, 213);
-		laser.setBounce(0);
-		laser.setCollideWorldBounds(true);	
-	    this.physics.add.collider(laser, platforms);
 
 	    
 	    //this.physics.add.collider(laser, player);
-	    this.physics.add.overlap(player, laser, hitEnemy, null, this);
 
 		camera = this.scene.scene.cameras.main;                    
 
@@ -277,8 +283,8 @@ console.log(config);
     function update ()
     {
     	
-    	//console.log(player.x);
-    	console.log(player.y);
+    	console.log(player.x);
+    	//console.log(player.y);
     	cursors = this.input.keyboard.createCursorKeys();
                             
 		camera.centerOn(player.x, player.y-100).setSize(1920,1080);        
@@ -295,7 +301,9 @@ console.log(config);
 	    {
 	        key_poster.setPosition (player.x +325 , player.y - 400);
 	    }
-
+	    else if (level_Maps_2 >= 2 && key_rec == false){
+	    	key_poster.setPosition (player.x +3000 , player.y - 3000);
+}
 
 		scoreText.setPosition(player.x - 380, player.y - 530 );
 		levelText.setPosition(player.x - 380 , player.y - 490 );      
@@ -365,26 +373,102 @@ console.log(config);
 
 
 		//vitesse laser
-		if (laser.x <= 100)
-		{
-			laser.setVelocityX(150)
+/*		if (level_Maps_2 >= 2) {
+
+			if (laser.x <= 100)
+			{
+				laser.setVelocityX(150)
+			}
+			if (laser.x >= 1035)
+			{
+				laser.setVelocityX(-150)
+			}
+
+			//taille laser
+			if (laser.x >= 250 && laser.x <= 885)
+			{
+				laser.setDisplaySize(15, 213);
+				laser.y=1711;
+			}
+
+			else {
+				laser.setDisplaySize(15, 50);
+				laser.y=1790;
+			}
+		}*/
+
+		if (level_Maps_2 >= 2) {
+			//speed laser
+				if (laser.x <= 100)
+				{
+					laser.setVelocityX(150)
+				}
+				if (laser.x >= 1035)
+				{
+					laser.setVelocityX(-150)
+				}
+
+			//size laser
+				if (laser.x >= 250 && laser.x <= 885)
+				{
+					laser.setDisplaySize(15, 213);
+					laser.y=1711;
+				}
+
+				else {
+					laser.setDisplaySize(15, 50);
+					laser.y=1790;
+				}
+
 		}
-		if (laser.x >= 1000)
-		{
-			laser.setVelocityX(-150)
+			
+		if (level_Maps_2 >= 4){
+			//speed laser
+				if (laser.x <= 100)
+				{
+					laser.setVelocityX(150)
+				}
+				if (laser.x >= 675)
+				{
+					laser.setVelocityX(-150)
+				}
+
+				//size laser
+				if (laser.x >= 250)
+				{
+					laser.setDisplaySize(15, 213);
+					laser.y=1711;
+				}
+
+				else {
+					laser.setDisplaySize(15, 50);
+					laser.y=1790;
+				}
+
+			//speed laser_2
+				if (laser_2.x <= 525)
+				{
+					laser_2.setVelocityX(150)
+				}
+				if (laser_2.x >= 1035)
+				{
+					laser_2.setVelocityX(-150)
+				}
+
+				//size laser_2
+				if (laser_2.x <= 885)
+				{
+					laser_2.setDisplaySize(15, 213);
+					laser_2.y=1711;
+				}
+
+				else {
+					laser_2.setDisplaySize(15, 50);
+					laser_2.y=1790;
+				}
 		}
 
-		//taille laser
-		if (laser.x >= 200 && laser.x <= 900)
-		{
-			laser.setDisplaySize(15, 213);
-			laser.y=1711;
-		}
 
-		else {
-			laser.setDisplaySize(15, 50);
-			laser.y=1790;
-		}
 		/*if (  laser.x <= 1000)
 		{
 			laser.setDisplaySize(15, 50);
@@ -513,41 +597,101 @@ function levelplus (player, door){
 
 		level_Maps_1 += 1;
 		level_Maps_2 += 1;
-		levelText.setText('Niveau : ' + level_Maps_1);
+		levelText.setText('Niveau : ' + level_Maps_2);           //à changer ensuite pour level_Maps_1
 		player.x = 500;
 		player.y = 1200;
 		key_rec=false;
 
+		//create var pour positionner la clé dans différent endroit à chaque niveau 
+		var Key_y;            
+		var Key_x;
+
+		if (level_Maps_2 == 2 ){
+			//create platforms pour bloquer le joueur
+			platform_MOBILE = this.physics.add.staticGroup();
+	  		platform_MOBILE.create(500, 1990, 'ground').setDisplaySize(50, 330).refreshBody();
+	  		this.physics.add.collider(player, platform_MOBILE);
+
+	  		//create laser 
+			laser = this.physics.add.sprite(100, 1608, 'laser');
+		    laser.setDisplaySize(15, 213);
+			laser.setBounce(0);
+			laser.setCollideWorldBounds(true);	
+		    this.physics.add.collider(laser, platforms);
+		    this.physics.add.overlap(player, laser, hitEnemy, null, this);
+		}
+
+		if (level_Maps_2 == 3){
+			Key_x= 600; 
+			Key_y= 1650;
+		}
+
+
+		if (level_Maps_2 == 4){
+			laser.x=100;
+			//create second laser
+			laser_2 = this.physics.add.sprite(1035, 1608, 'laser');
+		    laser_2.setDisplaySize(15, 213);
+			laser_2.setBounce(0);
+			laser_2.setTint(0x000000)
+			laser_2.setCollideWorldBounds(true);	
+		    this.physics.add.collider(laser_2, platforms);
+		    this.physics.add.overlap(player, laser_2, hitEnemy, null, this);			
+		}
+		if (level_Maps_2 == 5){
+			
+
+		}
+
+		if (level_Maps_2 == 6){
+
+		}
+
+		key.children.iterate(function (child) {
+
+            child.enableBody(true, Key_x, Key_y, true, true);
+
+        });
+
+        doorLock.children.iterate(function (child) {
+
+            child.enableBody(true, child.x, child.y, true, true);
+
+        });
+
 	}
 }
 
-		function door_lock (player, doorLock)
-	{
-		if(key_rec==true)
+
+
+	    function door_lock (player, doorLock)
 		{
-			doorLock.disableBody(true, true);
-			
+			if(key_rec==true)
+			{
+				doorLock.disableBody(true, true);
+				
+			}
 		}
-	}
 
 		function key_get (player, key)
 	{
 		key.disableBody(true, true);
-		//doorLock.destroy(true,true);
 		key_rec =true;
-		key_poster = this.add.image(750, 30, 'key').setScale(0.1);
-	        
+		if (key_rec == true){
+			key_poster = this.add.image(750, 30, 'key').setScale(0.1);
+		}
 
+	        		
 	}
 
 	function hitEnemy (p, e)
 	{
 		vie+=-1;
 
-		if (level_Maps_1 >= 3){
+		/*if (level_Maps_1 >= 3){
 			enemy.x=750;
 			enemy.y=1050;	
-		}
+		}*/
 			
 		player.x=100;
 		player.y=930;
@@ -600,6 +744,135 @@ function levelplus (player, door){
 			}
 		}	
 	}
+		function time ()
+	{
+		game.destroy(true);
+	    document.querySelector(".content").style.display="flex";
+	    document.querySelector("#menu").style.display="block";
+	}
+
+
+/*		function heartplus (player, heart) 
+	{
+		heart.disableBody(true, true);
+		if(vie==3){
+			heart4_verif =true;
+		}
+		else if (vie ==2){
+			heart1.setTint(0xffffff)
+		}
+		else if (vie==1){
+			heart2.setTint(0xffffff)
+		}
+		vie+=1;
+	}*/
+
+/*	function malusStar (enemy, star, score,scoreText)   // perte de score lorsque l'enemy touche une étoile     // meme function que collect star 
+	{
+	    star.disableBody(true, true);
+	    score -= 30;
+	    scoreText.setText('Score: ' + score);
+	    if (stars.countActive(true) == 0 )
+	    {
+	        stars.children.iterate(function (child) 
+	        {
+
+	        	if(child.y > 1050) 
+	        	{
+	            	child.enableBody(true, child.x, child.y, true, true);
+	        	} 
+	        	else if(child.y < 50) 
+	        	{
+	            	child.enableBody(true, child.x, child.y, true, true);
+	        	} 
+	        	else 
+	        	{
+					child.enableBody(true, Math.random()*1700, Math.random()*900, true, true);	        	
+				}
+
+	        });
+
+	        level += 1;
+	        levelText.setText('Niveau : ' + level);	
+
+	        //creation bomb dans Bordeaux
+	        if(Bordeaux_left==false)
+	        {
+	        	var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+		        var bomb = bombs.create(x, 16, 'bomb');
+		        bomb.setBounce(1);
+		        bomb.setCollideWorldBounds(true);
+		        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+	        }
+
+	        //creation d'un enemy Bordeaux
+			if (level == 3)
+			{
+				enemy = this.physics.add.sprite(1870, 1050, 'dude');
+				enemy.setBounce(0);
+				enemy.setCollideWorldBounds(true);
+				this.physics.add.collider(enemy, platforms);
+				enemy.setTint(0x353535);
+				this.physics.add.collider(player, enemy, hitEnemy, null, this);
+				this.physics.add.overlap(enemy, stars, malusStar, null, this);
+				//this.physics.add.overlap(enemy, stars, collectStar, null, this);
+			} 
+
+			//creation d'une étoile qui suit l'enemi Bordeaux
+			if (level == 4)
+			{
+				starMove = this.physics.add.sprite(1720, 1050, 'star');
+				starMove.setBounce(0);
+				starMove.setCollideWorldBounds(true);		
+				stars.add(starMove);
+			}
+
+			//creation d'un coeur supplémentaire
+			if(level == 6)
+			{
+				heart_rec = this.physics.add.staticGroup();
+				heart_rec.create(700, 500, 'heart').setScale(0.1).refreshBody();
+				this.physics.add.overlap(player, heart_rec, heartplus, null, this);
+			}
+
+			//creation d'un portail pour la fin du jeu 
+			if(level == 8)
+			{
+				gate_end = this.physics.add.staticGroup();                                       
+				gate_end.create(40, 80, 'gate_end').setScale(0.12).refreshBody();
+				this.physics.add.overlap(player, gate_end, victory, null, this);
+			}
+		}
+	}*/
+
+/*	function teleport (player, teleporter)
+	{
+		if(player.x >=1425 &&   player.y <= 160)        //teleporter en haut 
+		{     
+			player.x = 1410;
+			player.y = 970;
+		}
+		else if(player.x >=1425  && player.y >= 950)    // teleporter en bas 
+		{      
+			player.x = 1410;
+			player.y = 230; 
+		}
+	}
+*/
+
+/*function teleport (player, teleporter)
+	{
+		if(player.x >=1425 &&   player.y <= 160)        //teleporter en haut 
+		{     
+			player.x = 1410;
+			player.y = 970;
+		}
+		else if(player.x >=1425  && player.y >= 950)    // teleporter en bas 
+		{      
+			player.x = 1410;
+			player.y = 230; 
+		}
+	}*/
 
 }
 
