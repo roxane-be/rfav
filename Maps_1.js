@@ -109,7 +109,7 @@ console.log(config);
 	    platforms.create(1918, -27, 'ground').setDisplaySize(3868, 64).refreshBody();    // toit
 
 	    //creation platforms bordeau
-	   /* platforms.create(170, 160, 'ground').setDisplaySize(340, 18).refreshBody();   // 1
+	    platforms.create(170, 160, 'ground').setDisplaySize(340, 18).refreshBody();   // 1
 		platforms.create(38, 650, 'ground').setDisplaySize(80, 18).refreshBody();     // 2
 		platforms.create(96, 825, 'ground').setDisplaySize(200, 18).refreshBody();    // 3
 		platforms.create(190, 475, 'ground').setDisplaySize(100, 18).refreshBody();   // 4
@@ -127,7 +127,7 @@ console.log(config);
 	    platforms.create(1725, 190, 'ground').setDisplaySize(150, 18).refreshBody();  // 16
 	    platforms.create(1690, 480, 'ground').setDisplaySize(100, 18).refreshBody();  // 17
 	    platforms.create(1725, 820, 'ground').setDisplaySize(150, 18).refreshBody();  // 18
-	    platforms.create(1865, 660, 'ground').setDisplaySize(100, 18).refreshBody();  // 19*/
+	    platforms.create(1865, 660, 'ground').setDisplaySize(100, 18).refreshBody();  // 19/**/
 
 
 
@@ -160,18 +160,17 @@ console.log(config);
 
 		gate = this.physics.add.staticGroup();
 		gate.create(40, 80, 'teleporter').setScale(0.12).refreshBody().setTint(0xffff00);	//Bordeaux
-		gate.create(30, 2100, 'teleporter').setScale(0.12).refreshBody().setTint(0xffff00); //lyon
+		/*gate.create(40, 2100, 'teleporter').setScale(0.12).refreshBody().setTint(0xffff00); //lyon
 		gate.create(2883, 609, 'teleporter').setScale(0.12).refreshBody().setTint(0xffff00); //Paris
-		gate.create(2883, 2000, 'teleporter').setScale(0.12).refreshBody().setTint(0xffff00); //MontPellier
+		gate.create(2883, 2000, 'teleporter').setScale(0.12).refreshBody().setTint(0xffff00); //MontPellier*/
 		
 			
 		door = this.physics.add.staticGroup();
 		door.create(1860,2100, 'door').setScale(0.12).refreshBody();
 
-       /*
-		gate_end = this.physics.add.staticGroup();                                       
-		gate_end.create(40, 80, 'gate_end').setScale(0.12).refreshBody();
-        */
+      
+
+        
 
 	    //creation player    taille 32px sur x et 48px sur y  
 	    player = this.physics.add.sprite(30, 1050, 'dude');    // 30 1050
@@ -244,7 +243,7 @@ console.log(config);
 		//this.physics.add.overlap(player, teleporter, teleport, null, this);
 		this.physics.add.overlap(player, gate, Passage_Maps, null, this);
 		this.physics.add.overlap(player, door, levelplus, null, this);
-		//this.physics.add.overlap(player, gate_end, victory, null, this);
+		
 
 
 		key = this.physics.add.staticGroup();
@@ -571,7 +570,7 @@ function Passage_Maps (player, gate){
 		Bordeaux_left = true ;
 		gate.disableBody(true, true);
 	}
-	else if (player.x <= 1865 && player.y >= 2050)   //Lyon => Paris
+/*	else if (player.x <= 1865 && player.y >= 2050)   //Lyon => Paris
 	{
 		player.x = 2100;
 		player.y = 950;
@@ -588,7 +587,7 @@ function Passage_Maps (player, gate){
 		player.x = 100;
 		player.y = 900;
 		gate.disableBody(true, true);
-	}
+	}*/
 }
 
 
@@ -619,6 +618,8 @@ function levelplus (player, door){
 			laser.setCollideWorldBounds(true);	
 		    this.physics.add.collider(laser, platforms);
 		    this.physics.add.overlap(player, laser, hitEnemy, null, this);
+
+
 		}
 
 		if (level_Maps_2 == 3){
@@ -644,7 +645,9 @@ function levelplus (player, door){
 		}
 
 		if (level_Maps_2 == 6){
-
+			gate_end = this.physics.add.staticGroup();                                       
+			gate_end.create(40, 2100, 'gate_end').setScale(0.12).refreshBody();
+			this.physics.add.overlap(player, gate_end, victory, null, this);
 		}
 
 		key.children.iterate(function (child) {
@@ -693,6 +696,7 @@ function levelplus (player, door){
 			enemy.y=1050;	
 		}*/
 			
+
 		player.x=100;
 		player.y=930;
 
@@ -860,19 +864,18 @@ function levelplus (player, door){
 	}
 */
 
-/*function teleport (player, teleporter)
+		function victory (player, gate_end)      //actuellement placé sur Bordeaux
 	{
-		if(player.x >=1425 &&   player.y <= 160)        //teleporter en haut 
-		{     
-			player.x = 1410;
-			player.y = 970;
+		if(player.x <= 45 && player.y >= 2040)      
+		{
+			this.physics.pause();
+		    player.anims.play('turn');
+			gameOver = true;
+			win = this.add.image(500, 40, 'win').setScale(0.75);
+			win.setPosition(player.x , player.y-250);
+			var timeout = window.setTimeout(time, 2500);
 		}
-		else if(player.x >=1425  && player.y >= 950)    // teleporter en bas 
-		{      
-			player.x = 1410;
-			player.y = 230; 
-		}
-	}*/
+	}
 
 }
 
