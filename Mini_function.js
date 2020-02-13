@@ -24,7 +24,7 @@
 
 
 
-/*	var key_rec =false;
+	var key_rec =false;
 
 
 
@@ -33,12 +33,12 @@
 		game.destroy(true);
 	    document.querySelector(".content").style.display="flex";
 	    document.querySelector("#menu").style.display="block";
-	}*/
+	}
 
 
 
 
-/*	function heartplus (player, heart) 
+	function heartplus (player, heart) 
 	{
 		heart.disableBody(true, true);
 		if(vie==3){
@@ -51,22 +51,21 @@
 			heart2.setTint(0xffffff)
 		}
 		vie+=1;
-	}*/
+	}
 
 
 
 
-/*		function door_lock (player, doorLock)
+		function door_lock (player, doorLock)
 	{
 		if(key_rec==true)
 		{
 			doorLock.disableBody(true, true);
 			
 		}
-	}*/
+	}
 
-
-/*	function key_get (player, key)
+		function key_get (player, key)
 	{
 		key.disableBody(true, true);
 		//doorLock.destroy(true,true);
@@ -75,16 +74,16 @@
 	        
 
 	}
-*/
 
-/*	function malusStar (enemy, star)
+	function malusStar (enemy, star)
 	{
 	    star.disableBody(true, true);
 	    score += -30;
 	    scoreText.setText('Score: ' + score);
-	}*/
+	}
 
-/*function malusStar (enemy, star, score,scoreText)   // perte de score lorsque l'enemy touche une étoile     // meme function que collect star 
+
+function malusStar (enemy, star, score,scoreText)   // perte de score lorsque l'enemy touche une étoile     // meme function que collect star 
 	{
 	    star.disableBody(true, true);
 	    score -= 30;
@@ -160,9 +159,9 @@
 				this.physics.add.overlap(player, gate_end, victory, null, this);
 			}
 		}
-	}*/
+	}
 
-	/*function hitEnemy (p, e)
+	function hitEnemy (p, e)
 	{
 		vie+=-1;
 
@@ -221,4 +220,4 @@
 		    	var timeout = window.setTimeout(time, 2500);
 			}
 		}	
-	}*/
+	}
