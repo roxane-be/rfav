@@ -427,7 +427,7 @@ console.log(config);
 				{
 					laser.setVelocityX(150)
 				}
-				if (laser.x >= 675)
+				if (laser.x >= 750)
 				{
 					laser.setVelocityX(-150)
 				}
@@ -445,7 +445,7 @@ console.log(config);
 				}
 
 			//speed laser_2
-				if (laser_2.x <= 525)
+				if (laser_2.x <= 625)
 				{
 					laser_2.setVelocityX(150)
 				}
@@ -623,7 +623,7 @@ function levelplus (player, door){
 		}
 
 		if (level_Maps_2 == 3){
-			Key_x= 600; 
+			Key_x= 450; 
 			Key_y= 1650;
 		}
 
