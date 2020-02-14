@@ -475,7 +475,7 @@ console.log(playerName);
 
 		if (level >= 3)
 		{
-			enemy.x=750;
+			enemy.x=1870;
 			enemy.y=1050;	
 		}
 			
