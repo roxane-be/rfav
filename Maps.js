@@ -27,32 +27,32 @@ console.log(config);
 console.log(playerName);
 	var player_name = playerName;
     var game = new Phaser.Game(config);
+
     var platforms;
+
     var score = 0;
 	var scoreText;
 	var level = 1;
 	var levelText;
-	var vie = 3;
-	var vieText;
+	var life = 3;
+
 	var enemy;
-	var enemy_2;
 	var player;
 	var camera;  
+
 	var teleporter;
 	var gate;
-	var nbr_star = Math.random() * 20;
 
-	var heart4_verif=false;
-	var heart_rec;
+	var heart_4_verif=false;
+	var heart_recover_Maps_Bordeaux;
 
-	var heart1;
-	var heart2;
-	var heart3;
-	var heart4;
+	var heart_1;
+	var heart_2;
+	var heart_3;
+	var heart_4;
 
-	var Bordeaux_left = false ;
+	var Bordeaux_exit = false ;
 
-	var key;
 
 	var game_over;
 
@@ -64,13 +64,13 @@ console.log(playerName);
     	this.load.image('Montpellier', 'assets/Montpellier.jpg');
     	this.load.image('Paris', 'assets/Paris.jpg');
 
- 		//different portail 
-		this.load.image('teleporter','assets/portail.png');   // se teleporter       bleu
-	    this.load.image('gate','assets/portail_1.png');       // passage de maps     vert 
-	    this.load.image('door','assets/portail_2.png');       // monter de niveau    rouge
-	    this.load.image('gate_end','assets/portail_3.png');   // terminer le jeu     jaune 
+ 		//different gate 
+		this.load.image('teleporter','assets/portail.png');                  // to teleport         blue
+	    this.load.image('gate_change_Maps','assets/portail_1.png');          // to change maps     	green 
+	    this.load.image('gate_level_up','assets/portail_2.png');             // to level up         red
+	    this.load.image('gate_end_game','assets/portail_3.png');             // to finish game      yelloww 
 
-	    //objet jeu
+	    //objet game
 	    this.load.image('ground', 'assets/platform.png');
 	    this.load.image('star', 'assets/star.png');
 	    this.load.image('bomb', 'assets/bomb.png');
@@ -84,7 +84,7 @@ console.log(playerName);
 
     function create ()
     {
-    	//creation des différents background
+    	//create  different background
 		this.add.image(0, 0, 'Bordeaux').setOrigin(0, 0);
 		this.add.image(-5, 1080, 'Lyon').setOrigin(0, 0);
 		this.add.image(1920, 1080, 'Montpellier').setOrigin(0, 0);
@@ -92,27 +92,27 @@ console.log(playerName);
 
 
 		//Bordeaux  platform and teleporter
-		//creation teleporter dans Maps Bordeaux
+		//create teleporter in Maps Bordeaux
 		teleporter =  this.physics.add.staticGroup();
 		teleporter.create(1432, 140, 'teleporter').setScale(0.12).refreshBody();
 		teleporter.create(1460, 960, 'teleporter').setScale(0.12).refreshBody();	
 
 
-		//platforms de séparation 
-		//platforms de cadre
+		//platforms separation 
+		//platforms border
 	    platforms = this.physics.add.staticGroup();
-	    platforms.create(1918, 2180, 'ground').setDisplaySize(3868, 64).refreshBody();    // sol
-	    platforms.create(1918, -27, 'ground').setDisplaySize(3868, 64).refreshBody();    // toit
-	    platforms.create(3844, 1080, 'ground').setDisplaySize(16, 2160).refreshBody();  // bordur droit
-	    platforms.create(-8, 1070, 'ground').setDisplaySize(16, 2160).refreshBody();   // bordur gauche
+	    platforms.create(1918, 2180, 'ground').setDisplaySize(3868, 64).refreshBody();    // ground
+	    platforms.create(1918, -27, 'ground').setDisplaySize(3868, 64).refreshBody();    // roof
+	    platforms.create(3844, 1080, 'ground').setDisplaySize(16, 2160).refreshBody();  // border right
+	    platforms.create(-8, 1070, 'ground').setDisplaySize(16, 2160).refreshBody();   // bordur left
 
-        //séparation des 4 Maps
-		platforms.create(1920, 1075, 'ground').setDisplaySize(16, 2160).refreshBody(); // verticale   16. 2160 
-		platforms.create(1918, 1080, 'ground').setDisplaySize(3868, 16).refreshBody(); // horizontale    3868.16 3768
+        //separation of 4 Maps
+		platforms.create(1920, 1075, 'ground').setDisplaySize(16, 2160).refreshBody(); // vertical  
+		platforms.create(1918, 1080, 'ground').setDisplaySize(3868, 16).refreshBody(); // horizontal   
 
 
 
-	    //creation platforms Bordeaux
+	    //createplatforms Bordeaux
 	    platforms.create(170, 160, 'ground').setDisplaySize(340, 18).refreshBody();   // 1
 		platforms.create(38, 650, 'ground').setDisplaySize(80, 18).refreshBody();     // 2
 		platforms.create(96, 825, 'ground').setDisplaySize(200, 18).refreshBody();    // 3
@@ -133,21 +133,21 @@ console.log(playerName);
 	    platforms.create(1725, 820, 'ground').setDisplaySize(150, 18).refreshBody();  // 18
 	    platforms.create(1865, 660, 'ground').setDisplaySize(100, 18).refreshBody();  // 19
 
-	    //creation platforms Lyon
+	    //create platforms Lyon
 
-	    //creation platforms Paris
+	    //create platforms Paris
 
-	    //creation platforms Montpellier
+	    //create platforms Montpellier
 
 
-	    //creation player    taille 32px sur x et 48px sur y  
+	    //create player 
 	    player = this.physics.add.sprite(30, 1000, 'dude');    // 30 1050
 		player.setDisplaySize(40,56);
 		player.setBounce(0.2);
 		player.setCollideWorldBounds(true);
 		
 
-		//son animation
+		//animation player
 		this.anims.create({
 		    key: 'left',
 		    frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
@@ -170,7 +170,7 @@ console.log(playerName);
 
 
 
-		// creation des stars 
+		//create stars 
 		stars = this.physics.add.group({
 		    key: 'star',
 		    repeat: 14,
@@ -197,20 +197,20 @@ console.log(playerName);
 		//physic for Montpellier
 
 
-		//texte score et niveau
+		//text score and level
 		scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '38px', fill: '#00f' });
 		levelText = this.add.text(16, 50, 'Niveau: 1', { fontSize: '38px', fill: '#00f' });
 		
-		//creation vie
-		heart1 = this.add.image(600, 30, 'heart').setScale(0.14);             
-		heart2 = this.add.image(650, 30, 'heart').setScale(0.14);
-		heart3 = this.add.image(700, 30, 'heart').setScale(0.14);
-		heart4 = this.add.image(5750, 30, 'heart').setScale(0.14);
+		//create life player
+		heart_1 = this.add.image(600, 30, 'heart').setScale(0.14);             
+		heart_2 = this.add.image(650, 30, 'heart').setScale(0.14);
+		heart_3 = this.add.image(700, 30, 'heart').setScale(0.14);
+		heart_4 = this.add.image(5750, 30, 'heart').setScale(0.14);
 
-
+		//camera player
 		camera = this.scene.scene.cameras.main;                    
 
-	
+		//create bomb
 		bombs = this.physics.add.group();
 		this.physics.add.collider(bombs, platforms);
 		this.physics.add.collider(player, bombs, hitEnemy, null, this);
@@ -224,23 +224,28 @@ console.log(playerName);
     {
     	//console.log(player.x);    
     	//console.log(player.y);
+
+    	//recovers keyboards
     	cursors = this.input.keyboard.createCursorKeys();
-                            
+         
+
+    	//postionnement camera, text score and level, life
 		camera.centerOn(player.x, player.y-100).setSize(1920,1080);        
 
-		heart1.setPosition(player.x + 690, player.y - 580 );
-		heart2.setPosition(player.x + 770, player.y - 580 ); 
-		heart3.setPosition(player.x + 850, player.y - 580 );
+		heart_1.setPosition(player.x + 690, player.y - 580 );
+		heart_2.setPosition(player.x + 770, player.y - 580 ); 
+		heart_3.setPosition(player.x + 850, player.y - 580 );
 				
-		if(heart4_verif==true)
+		if(heart_4_verif==true)
 		{
-			heart4.setPosition(player.x + 610, player.y - 580 );
+			heart_4.setPosition(player.x + 610, player.y - 580 );
 		}
 
 		scoreText.setPosition(player.x - 850, player.y - 580 );
 		levelText.setPosition(player.x - 850 , player.y - 530 );      
                             
 
+		//speed player with his animation
 		if (cursors.left.isDown)
 		{
 		    player.setVelocityX(-200); //-160
@@ -263,7 +268,7 @@ console.log(playerName);
 
 
 
-		// creation d'un enemy qui sur le sol
+		// create enemy on ground Maps Bordeaux
 		if (level >= 3)
 		{
 			if(enemy.x >= 1870)
@@ -278,7 +283,7 @@ console.log(playerName);
 			}
 		}
 		
-		// star qui suit l'enemy du sol 
+		// star following enemy 
 		if(level >=4)
 		{
 			if(enemy.body.velocity.x  > 0)
@@ -292,20 +297,7 @@ console.log(playerName);
 		}
     }
 
-function heartplus (player, heart_rec) 
-	{
-		heart_rec.disableBody(true, true);
-		if(vie==3){
-			heart4_verif =true;
-		}
-		else if (vie ==2){
-			heart1.setTint(0xffffff)
-		}
-		else if (vie==1){
-			heart2.setTint(0xffffff)
-		}
-		vie+=1;
-	}
+
 	
 		function collectStar (player, star)
 	{
@@ -336,8 +328,8 @@ function heartplus (player, heart_rec)
 	        level += 1;
 	        levelText.setText('Niveau : ' + level);	
 
-	        //creation bomb dans Bordeaux
-	        if(Bordeaux_left==false)
+	        //create bomb in Bordeaux
+	        if(Bordeaux_exit ==false)
 	        {
 	        	var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 		        var bomb = bombs.create(x, 16, 'bomb');
@@ -346,7 +338,7 @@ function heartplus (player, heart_rec)
 		        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
 	        }
 
-	        //creation d'un enemy Bordeaux
+	        //create enemy in Maps Bordeaux
 			if (level == 3)
 			{
 				enemy = this.physics.add.sprite(1870, 1050, 'dude');
@@ -356,10 +348,9 @@ function heartplus (player, heart_rec)
 				enemy.setTint(0x353535);
 				this.physics.add.collider(player, enemy, hitEnemy, null, this);
 				this.physics.add.overlap(enemy, stars, malusStar, null, this);
-				//this.physics.add.overlap(enemy, stars, collectStar, null, this);
 			} 
 
-			//creation d'une étoile qui suit l'enemi Bordeaux
+			//create one star following enemy 
 			if (level == 4)
 			{
 				starMove = this.physics.add.sprite(1720, 1050, 'star');
@@ -368,45 +359,40 @@ function heartplus (player, heart_rec)
 				stars.add(starMove);
 			}
 
-			//creation d'un coeur supplémentaire
-			if(level == 3)
+			//create bonus heart Maps Bordeaux 
+			if(level == 6)
 			{
-				heart_rec = this.physics.add.staticGroup();
-				heart_rec.create(700, 500, 'heart').setScale(0.1).refreshBody();
-				this.physics.add.overlap(player, heart_rec, /*vie, heart4_verif, heart1, heart2,*/ heartplus, null, this);
+				heart_recover_Maps_Bordeaux = this.physics.add.staticGroup();
+				heart_recover_Maps_Bordeaux.create(700, 500, 'heart').setScale(0.1).refreshBody();
+				this.physics.add.overlap(player, hearheart_recover_Maps_Bordeauxt_recover, Bonus_Heart_Maps_Bordeaux, null, this);
 			}
 
-			//creation d'un portail pour la fin du jeu 
-			if(level == 2)
+			//create gate for the end game
+			if(level == 8)
 			{
-				gate_end = this.physics.add.staticGroup();                                       
-				gate_end.create(40, 80, 'gate_end').setScale(0.12).refreshBody();
-				this.physics.add.overlap(player, gate_end, victory, null, this);
+				gate_end_game = this.physics.add.staticGroup();                                       
+				gate_end_game.create(40, 80, 'gate_end_game').setScale(0.12).refreshBody();
+				this.physics.add.overlap(player, gate_end_game, victory, null, this);
 			}
 		}
 	}
-		function time ()
+
+	function teleport (player, teleporter)
 	{
-		fetch("https://api.deming.fr/scoring/7/put/"+player_name+"/"+score).then(function(response) { 
-   if(response.ok) {
-   		response.json().then(function(json) {
-			console.log(json);
-			for(j in json) {
-				console.log(json[j].score);
-            }
-	});
-   }
-});
-		game.destroy(true);
-	    document.querySelector(".content").style.display="flex";
-	    document.querySelector("#menu").style.display="block";
+		if(player.x >=1425 &&   player.y <= 160)        //teleporter up
+		{     
+			player.x = 1410;
+			player.y = 970;
+		}
+		else if(player.x >=1425  && player.y >= 950)    // teleporter down 
+		{      
+			player.x = 1410;
+			player.y = 230; 
+		}
 	}
 
 
-
-
-
-	function malusStar (enemy, star)   // perte de score lorsque l'enemy touche une étoile     // meme function que collect star 
+	function malusStar (enemy, star)   
 	{
 	    star.disableBody(true, true);
 	    score -= 30;
@@ -434,8 +420,8 @@ function heartplus (player, heart_rec)
 	        level += 1;
 	        levelText.setText('Niveau : ' + level);	
 
-	        //creation bomb dans Bordeaux
-	        if(Bordeaux_left==false)
+	         //create bomb in Bordeaux
+	        if(Bordeaux_exit ==false)
 	        {
 	        	var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 		        var bomb = bombs.create(x, 16, 'bomb');
@@ -444,7 +430,7 @@ function heartplus (player, heart_rec)
 		        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
 	        }
 
-	        //creation d'un enemy Bordeaux
+	        //create enemy in Maps Bordeaux
 			if (level == 3)
 			{
 				enemy = this.physics.add.sprite(1870, 1050, 'dude');
@@ -454,10 +440,9 @@ function heartplus (player, heart_rec)
 				enemy.setTint(0x353535);
 				this.physics.add.collider(player, enemy, hitEnemy, null, this);
 				this.physics.add.overlap(enemy, stars, malusStar, null, this);
-				//this.physics.add.overlap(enemy, stars, collectStar, null, this);
 			} 
 
-			//creation d'une étoile qui suit l'enemi Bordeaux
+			//create one star following enemy 
 			if (level == 4)
 			{
 				starMove = this.physics.add.sprite(1720, 1050, 'star');
@@ -466,29 +451,30 @@ function heartplus (player, heart_rec)
 				stars.add(starMove);
 			}
 
-			//creation d'un coeur supplémentaire
-			if(level == 3)
+			//create bonus heart Maps Bordeaux 
+			if(level == 6)
 			{
-				heart_rec = this.physics.add.staticGroup();
-				heart_rec.create(700, 500, 'heart').setScale(0.1).refreshBody();
-				this.physics.add.overlap(player, heart_rec, heartplus, null, this);
+				heart_recover_Maps_Bordeaux = this.physics.add.staticGroup();
+				heart_recover_Maps_Bordeaux.create(700, 500, 'heart').setScale(0.1).refreshBody();
+				this.physics.add.overlap(player, heart_recover_Maps_Bordeaux, Bonus_Heart_Maps_Bordeaux, null, this);
 			}
 
-			//creation d'un portail pour la fin du jeu 
+			//create gate for the end game
 			if(level == 8)
 			{
-				gate_end = this.physics.add.staticGroup();                                       
-				gate_end.create(40, 80, 'gate_end').setScale(0.12).refreshBody();
-				this.physics.add.overlap(player, gate_end, victory, null, this);
+				gate_end_game = this.physics.add.staticGroup();                                       
+				gate_end_game.create(40, 80, 'gate_end_game').setScale(0.12).refreshBody();
+				this.physics.add.overlap(player, gate_end_game, victory, null, this);
 			}
 		}
 	}
 
 	function hitEnemy (p, e)
 	{
-		vie+=-1;
+		life+=-1;
 
-		if (level >= 3){
+		if (level >= 3)
+		{
 			enemy.x=750;
 			enemy.y=1050;	
 		}
@@ -496,19 +482,24 @@ function heartplus (player, heart_rec)
 		player.x=100;
 		player.y=930;
 
-		if(heart4_verif ==false){
-			if (vie==2){
-				heart1.setTint(0x000000);
+		if(heart_4_verif ==false)
+		{
+			if (life==2)
+			{
+				heart_1.setTint(0x000000);
 			}
-			if (vie==1){
-				heart2.setTint(0x000000);
+			if (life==1)
+			{
+				heart_2.setTint(0x000000);
 			}
-			if (vie==0){
-				heart3.setTint(0x000000);
+			if (life==0)
+			{
+				heart_3.setTint(0x000000);
 				this.physics.pause();
 		   		player.setTint(0xff0000);
 		    	player.anims.play('turn');
-		    	if(level>=3){
+		    	if(level>=3)
+		    	{
 		    		enemy.anims.play('turn');
 		    	}		
 		    	gameOver = true;
@@ -518,18 +509,18 @@ function heartplus (player, heart_rec)
 			}
 		}
 
-		if(heart4_verif ==true){
-			if (vie==3){
-			heart1.setTint(0x000000);
+		if(heart_4_verif ==true){
+			if (life==3){
+			heart_1.setTint(0x000000);
 			}
-			if (vie==2){
-				heart2.setTint(0x000000);
+			if (life==2){
+				heart_2.setTint(0x000000);
 			}
-			if (vie==1){
-				heart3.setTint(0x000000);
+			if (life==1){
+				heart_3.setTint(0x000000);
 			}
-			if (vie==0){
-				heart4.setTint(0x000000);
+			if (life==0){
+				heart_4.setTint(0x000000);
 				this.physics.pause();
 		   		player.setTint(0xff0000);
 		    	player.anims.play('turn');
@@ -545,20 +536,51 @@ function heartplus (player, heart_rec)
 		}	
 	}
 
-function teleport (player, teleporter)
+
+
+
+
+	function Bonus_Heart_Maps_Bordeaux (player, heart_recover_Maps_Bordeaux) 
 	{
-		if(player.x >=1425 &&   player.y <= 160)        //teleporter en haut 
-		{     
-			player.x = 1410;
-			player.y = 970;
+		heart_recover_Maps_Bordeaux.disableBody(true, true);
+		if(life==3){
+			heart_4_verif =true;
 		}
-		else if(player.x >=1425  && player.y >= 950)    // teleporter en bas 
-		{      
-			player.x = 1410;
-			player.y = 230; 
+		else if (life ==2){
+			heart_1.setTint(0xffffff)
 		}
+		else if (life==1){
+			heart_2.setTint(0xffffff)
+		}
+		life+=1;
 	}
-		function victory (player, gate_end)      //actuellement placé sur Bordeaux
+
+
+
+		function time ()
+	{
+		fetch("https://api.deming.fr/scoring/7/put/"+player_name+"/"+score).then(function(response) 
+		{ 
+		   if(response.ok) 
+		   {
+		   		response.json().then(function(json) 
+		   		{
+					console.log(json);
+					for(j in json) 
+					{
+						console.log(json[j].score);
+		            }
+				});
+		   }
+		});
+			game.destroy(true);
+		    document.querySelector(".content").style.display="flex";
+		    document.querySelector("#menu").style.display="block";
+	}
+
+
+
+		function victory (player, gate_end_game)  
 	{
 		if(player.x <=45 && player.y <= 75)      
 		{
